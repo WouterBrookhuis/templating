@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Protocol xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PTP">
+  <Types>
+    <Type Name="uint4" NumBits="4" />
+    <Type Name="uint8" NumBits="8" />
+    <Type Name="int8" NumBits="8" />
+    <Type Name="uint16" NumBits="16" />
+    <Type Name="int16" NumBits="16" />
+    <Type Name="uint32" NumBits="32" />
+    <Type Name="int32" NumBits="32" />
+    <Type Name="uint48" NumBits="48" />
+    <Type Name="uint64" NumBits="64" />
+    <Type Name="int64" NumBits="64" />
+
+    <Type Name="MessageType" NumBits="4"/>
+    <Type Name="PortIdentity" />
+    <Type Name="MessageHeader">
+      <Fields>
+        <Field Type="uint4" Name="transportSpecific" />
+        <Field Type="MessageType" Name="messageType" />
+        <Field Type="uint4" Name="reserved1" />
+        <Field Type="uint4" Name="version" />
+        <Field Type="uint16" Name="messageLength" />
+        <Field Type="uint8" Name="domain" />
+        <Field Type="uint8" Name="reserved2" />
+        <Field Type="uint16" Name="flagField" />
+        <Field Type="int64" Name="correctionField" />
+        <Field Type="uint32" Name="reserved3" />
+        <Field Type="PortIdentity" Name="sourcePortIdentity" />
+        <Field Type="uint16" Name="sequenceId" />
+        <Field Type="uint8" Name="controlField" />
+        <Field Type="int8" Name="logMessageInterval" />
+      </Fields>
+    </Type>
+    <Type Name="Timestamp">
+      <Fields>
+        <Field Type="uint48" Name="secondsField" />
+        <Field Type="uint32" Name="nanosecondsField" />
+      </Fields>
+    </Type>
+  </Types>
+  <Messages>
+    <Message Name="Sync">
+      <Fields>
+        <Field Type="MessageHeader" Name="header" />
+        <Field Type="Timestamp" Name="originTimestamp" />
+      </Fields>
+    </Message>
+  </Messages>
+</Protocol>
