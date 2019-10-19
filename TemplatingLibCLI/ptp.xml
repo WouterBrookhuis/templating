@@ -13,7 +13,24 @@
     <Type Name="int64" NumBits="64" />
 
     <Type Name="MessageType" NumBits="4"/>
-    <Type Name="PortIdentity" />
+    <Type Name="ClockIdentity">
+      <Fields>
+        <Field Type="uint8" Name="byte0" />
+        <Field Type="uint8" Name="byte1" />
+        <Field Type="uint8" Name="byte2" />
+        <Field Type="uint8" Name="byte3" />
+        <Field Type="uint8" Name="byte4" />
+        <Field Type="uint8" Name="byte5" />
+        <Field Type="uint8" Name="byte6" />
+        <Field Type="uint8" Name="byte7" />
+      </Fields>
+    </Type>
+    <Type Name="PortIdentity">
+      <Fields>
+        <Field Type="ClockIdentity" Name="clockIdentity" />
+        <Field Type="uint16" Name="portNumber" />
+      </Fields>
+    </Type>
     <Type Name="MessageHeader">
       <Fields>
         <Field Type="uint4" Name="transportSpecific" />
