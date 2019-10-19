@@ -22,9 +22,6 @@ namespace TemplatingLibCLI
 
             var writer = Console.Out;
 
-            var ptpHeaderTemplate = new Template(structTemplate);
-
-
             var baseDictionary = new Dictionary<string, IInsertable>
             {
                 { "obj_name", new StringLiteral("PTP_Header") },
