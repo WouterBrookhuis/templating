@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{287CCD12-2702-4610-AEAE-E05946F7EC4E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TemplatingLib</RootNamespace>
-    <AssemblyName>TemplatingLib</AssemblyName>
+    <ProjectGuid>{4E3C7507-CAF2-42AF-9FCA-2620B5BCA2A4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TemplatingLibCLI</RootNamespace>
+    <AssemblyName>TemplatingLibCLI</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,16 +43,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IInsertable.cs" />
-    <Compile Include="InsertableContainer.cs" />
-    <Compile Include="InsertionPoint.cs" />
-    <Compile Include="NestedDictionary.cs" />
-    <Compile Include="ParsingException.cs" />
-    <Compile Include="ParsingOptions.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringLiteral.cs" />
-    <Compile Include="Template.cs" />
-    <Compile Include="TemplateInsert.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Templates\c_parsing.t">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\c_struct.t">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TemplatingLib\TemplatingLib.csproj">
+      <Project>{287ccd12-2702-4610-aeae-e05946f7ec4e}</Project>
+      <Name>TemplatingLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Templates\c_struct_field.t">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
