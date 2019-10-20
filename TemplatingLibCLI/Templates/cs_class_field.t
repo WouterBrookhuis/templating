@@ -1,1 +1,1 @@
-﻿%field_type% %field_name%;
+﻿public %field_type% %field_name% { get; set; }
