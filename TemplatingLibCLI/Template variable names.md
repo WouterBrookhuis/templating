@@ -1,7 +1,8 @@
 ﻿## Templates
 Various templates can be specified, both globally and per type.
+
 | Template | Description |
-|--|--|
+| --- | --- |
 | FileTemplate | Top level template for the output file layout |
 | DefaultTypeTemplates | Type templates to use by default |
 | CustomTypeTemplates | Type templates to use for specific types. Type attribute determines type it is for |
@@ -16,8 +17,9 @@ Various templates can be specified, both globally and per type.
 
 ## Template variables
 These are the variables that are available in the templates. Some depend on context, such as obj_name which in the case of TypeNameTemplate refers to the name of the object we want the type name for.
+
 | Variable | Description |
-|--|--|
+| --- | --- |
 | module_name | Name of the module (protocol) being generated |
 | obj_name | Name of the object (message or type) being generated |
 | obj_type | Type of the object (output of TypeNameTemplate) being generated |
