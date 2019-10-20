@@ -1,6 +1,6 @@
-public static %module_name%.%obj_name% Read(/* TODO: Parameters */)
+public static %obj_type% Read(/* TODO: Parameters */)
 {
-    %module_name%.%obj_name% %obj_name% = new %module_name%.%obj_name%();
+    %obj_type% %obj_name% = new %obj_type%();
     
     %read_fields%
     

@@ -1,4 +1,4 @@
-public static void Write(%module_name%.%obj_name% %obj_name%, /* TODO: Parameters */)
+public static void Write(%obj_type% %obj_name%, /* TODO: Parameters */)
 {
     %write_fields%
 }

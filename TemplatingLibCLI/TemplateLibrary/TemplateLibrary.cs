@@ -13,7 +13,6 @@ namespace TemplatingLibCLI.TemplateLibraryXML
         [XmlAttribute]
         public string Name { get; set; }
         public string FileTemplate { get; set; }
-        public string TypeNameTemplate { get; set; }
         public TypeTemplatesXML DefaultTypeTemplates { get; set; }
         public List<TypeTemplatesXML> CustomTypeTemplates { get; set; }
 

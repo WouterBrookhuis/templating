@@ -72,7 +72,7 @@ namespace TemplatingLib
             }
             catch(Exception e)
             {
-                throw new Exception("Could not open file to load template", e);
+                throw new Exception($"Could not open file to load template {file}", e);
             }
 
             return this;

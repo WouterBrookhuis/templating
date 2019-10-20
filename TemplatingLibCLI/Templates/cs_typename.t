@@ -1,1 +1,1 @@
-﻿%module_name%.%obj_name%
+﻿%obj_name%

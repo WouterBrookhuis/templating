@@ -18,5 +18,6 @@ namespace TemplatingLibCLI.TemplateLibraryXML
         public string ReadFunction { get; set; }
         public string TypeTemplate { get; set; }
         public string TypeFieldTemplate { get; set; }
+        public string TypeNameTemplate { get; set; }
     }
 }

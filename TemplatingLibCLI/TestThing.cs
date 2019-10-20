@@ -101,25 +101,8 @@ namespace TemplatingLibCLI
                 {
                     { "obj_name", new StringLiteral(type.Name) },
                 };
+                typeDict.Add("obj_type", new TemplateInsert(typeTemplates.TypeNameTemplate, typeDict));
 
-                // Fields
-                var fieldsContainer = new InsertableContainer()
-                {
-                    AutoIndentAndNewline = true
-                };
-                foreach(var field in type.Fields)
-                {
-                    var fieldDict = new NestedDictionary<string, IInsertable>(typeDict)
-                    {
-                        { "field_type", new TemplateInsert(library.TypeNameTemplate, new NestedDictionary<string, IInsertable>(baseDict)
-                        {
-                            { "obj_name", new StringLiteral(field.Type.Name) }
-                        }) },
-                        { "field_name", new StringLiteral(field.Name) },
-                    };
-                    fieldsContainer.Insertables.Add(new TemplateInsert(typeTemplates.TypeFieldTemplate, fieldDict));
-                }
-                typeDict.Add("fields", fieldsContainer);
 
                 // Functions
                 var functionsContainer = new InsertableContainer()
@@ -139,11 +122,22 @@ namespace TemplatingLibCLI
                     AutoIndentAndNewline = true
                 };
 
+                // Fields
+                var fieldsContainer = new InsertableContainer()
+                {
+                    AutoIndentAndNewline = true
+                };
+
                 foreach(var field in type.Fields)
                 {
-                    var fieldReadWriteCallDict = new NestedDictionary<string, IInsertable>(typeDict)
+                    if(!library.CustomTypeTemplates.TryGetValue(field.Type.Name, out TemplateLibrary.TypeTemplates fieldTypeTemplates))
                     {
-                        { "field_type", new TemplateInsert(library.TypeNameTemplate, new NestedDictionary<string, IInsertable>(baseDict)
+                        fieldTypeTemplates = library.GenericTypeTemplates;
+                    }
+
+                    var fieldDict = new NestedDictionary<string, IInsertable>(typeDict)
+                    {
+                        { "field_type", new TemplateInsert(fieldTypeTemplates.TypeNameTemplate, new NestedDictionary<string, IInsertable>(baseDict)
                         {
                             { "obj_name", new StringLiteral(field.Type.Name) }
                         }) },
@@ -152,15 +146,10 @@ namespace TemplatingLibCLI
                         { "field_bit_offset", new StringLiteral(field.BitOffset.ToString()) },
                     };
 
-                    if(!library.CustomTypeTemplates.TryGetValue(field.Type.Name, out TemplateLibrary.TypeTemplates fieldTypeTemplates))
-                    {
-                        fieldTypeTemplates = library.GenericTypeTemplates;
-                    }
-
-                    readCallContainer.Insertables.Add(new TemplateInsert(fieldTypeTemplates.ReadCall, fieldReadWriteCallDict));
-                    writeCallContainer.Insertables.Add(new TemplateInsert(fieldTypeTemplates.WriteCall, fieldReadWriteCallDict));
+                    readCallContainer.Insertables.Add(new TemplateInsert(fieldTypeTemplates.ReadCall, fieldDict));
+                    writeCallContainer.Insertables.Add(new TemplateInsert(fieldTypeTemplates.WriteCall, fieldDict));
+                    fieldsContainer.Insertables.Add(new TemplateInsert(typeTemplates.TypeFieldTemplate, fieldDict));
                 }
-
 
                 var readFuncDict = new NestedDictionary<string, IInsertable>(typeDict)
                 {
@@ -174,6 +163,8 @@ namespace TemplatingLibCLI
                 };
                 functionsContainer.Insertables.Add(new TemplateInsert(typeTemplates.WriteFunction, writeFuncDict));
 
+
+                typeDict.Add("fields", fieldsContainer);
                 typeDict.Add("functions", functionsContainer);
 
                 // Write out
@@ -182,7 +173,7 @@ namespace TemplatingLibCLI
 
             var fileDict = new NestedDictionary<string, IInsertable>(baseDict)
             {
-                { "constants", new StringLiteral($"#define MODULE_NAME {module.Name}") },
+                { "constants", new StringLiteral("") },
                 { "objects", objectsContainer }
             };
 

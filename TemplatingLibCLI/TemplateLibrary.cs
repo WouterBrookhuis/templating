@@ -19,11 +19,11 @@ namespace TemplatingLibCLI
             public Template ReadFunction { get; set; }
             public Template TypeTemplate { get; set; }
             public Template TypeFieldTemplate { get; set; }
+            public Template TypeNameTemplate { get; set; }
         }
 
         public TypeTemplates GenericTypeTemplates { get; set; }
         public Template FileTemplate { get; set; }
-        public Template TypeNameTemplate { get; set; }
         public Dictionary<string, TypeTemplates> CustomTypeTemplates { get; set; }
 
         public TemplateLibrary()
@@ -52,7 +52,6 @@ namespace TemplatingLibCLI
             var lib = new TemplateLibrary();
 
             lib.FileTemplate = new Template().LoadFromFile(xml.FileTemplate);
-            lib.TypeNameTemplate = new Template().LoadFromFile(xml.TypeNameTemplate);
             lib.GenericTypeTemplates = new TypeTemplates
             {
                 ReadCall = new Template().LoadFromFile(xml.DefaultTypeTemplates.ReadCall),
@@ -60,7 +59,8 @@ namespace TemplatingLibCLI
                 WriteCall = new Template().LoadFromFile(xml.DefaultTypeTemplates.WriteCall),
                 WriteFunction = new Template().LoadFromFile(xml.DefaultTypeTemplates.WriteFunction),
                 TypeFieldTemplate = new Template().LoadFromFile(xml.DefaultTypeTemplates.TypeFieldTemplate),
-                TypeTemplate = new Template().LoadFromFile(xml.DefaultTypeTemplates.TypeTemplate)
+                TypeTemplate = new Template().LoadFromFile(xml.DefaultTypeTemplates.TypeTemplate),
+                TypeNameTemplate = new Template().LoadFromFile(xml.DefaultTypeTemplates.TypeNameTemplate)
             };
 
             foreach(var customTypeTemplate in xml.CustomTypeTemplates)
@@ -72,7 +72,8 @@ namespace TemplatingLibCLI
                     WriteCall = new Template().LoadFromFile(customTypeTemplate.WriteCall),
                     WriteFunction = new Template().LoadFromFile(customTypeTemplate.WriteFunction),
                     TypeFieldTemplate = new Template().LoadFromFile(customTypeTemplate.TypeFieldTemplate),
-                    TypeTemplate = new Template().LoadFromFile(customTypeTemplate.TypeTemplate)
+                    TypeTemplate = new Template().LoadFromFile(customTypeTemplate.TypeTemplate),
+                    TypeNameTemplate = new Template().LoadFromFile(customTypeTemplate.TypeNameTemplate)
                 });
             }
 
