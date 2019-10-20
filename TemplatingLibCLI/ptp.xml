@@ -13,6 +13,13 @@
     <Type Name="int64" NumBits="64" />
 
     <Type Name="MessageType" NumBits="4"/>
+    <Type Name="ClockQuality">
+      <Fields>
+        <Field Type="uint8" Name="clockClass" />
+        <Field Type="uint8" Name="clockAccuarcy" />
+        <Field Type="uint16" Name="offsetScaledLogVariance" />
+      </Fields>
+    </Type>
     <Type Name="ClockIdentity">
       <Fields>
         <Field Type="uint8" Name="byte0" />
@@ -57,10 +64,43 @@
     </Type>
   </Types>
   <Messages>
+    <Message Name="Announce">
+      <Fields>
+        <Field Type="MessageHeader" Name="header" />
+        <Field Type="Timestamp" Name="originTimestamp" />
+        <Field Type="int16" Name="currentUtcOffset" />
+        <Field Type="uint8" Name="reserved" />
+        <Field Type="uint8" Name="grandmasterPriority1" />
+        <Field Type="ClockQuality" Name="grandmasterClockQuality" />
+        <Field Type="uint8" Name="grandmasterPriority2" />
+        <Field Type="ClockIdentity" Name="grandmasterClockIdentity" />
+        <Field Type="uint16" Name="stepsRemoved" />
+        <Field Type="uint8" Name="timeSource" />
+      </Fields>
+    </Message>
     <Message Name="Sync">
       <Fields>
         <Field Type="MessageHeader" Name="header" />
         <Field Type="Timestamp" Name="originTimestamp" />
+      </Fields>
+    </Message>
+    <Message Name="Delay_Req">
+      <Fields>
+        <Field Type="MessageHeader" Name="header" />
+        <Field Type="Timestamp" Name="originTimestamp" />
+      </Fields>
+    </Message>
+    <Message Name="Follow_Up">
+      <Fields>
+        <Field Type="MessageHeader" Name="header" />
+        <Field Type="Timestamp" Name="preciseOriginTimestamp" />
+      </Fields>
+    </Message>
+    <Message Name="Delay_Resp">
+      <Fields>
+        <Field Type="MessageHeader" Name="header" />
+        <Field Type="Timestamp" Name="receiveTimestamp" />
+        <Field Type="PortIdentity" Name="requestingPortIdentity" />
       </Fields>
     </Message>
   </Messages>
