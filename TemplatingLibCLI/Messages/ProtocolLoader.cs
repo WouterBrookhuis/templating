@@ -22,7 +22,7 @@ namespace TemplatingLibCLI.Messages
             }
             catch (Exception e)
             {
-                return null;
+                throw e;
             }
         }
 

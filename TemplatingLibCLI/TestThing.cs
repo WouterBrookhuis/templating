@@ -78,7 +78,7 @@ namespace TemplatingLibCLI
             }
         }
 
-        public void WriteModule(TextWriter output, TemplateLibary library, Data.Module module)
+        public void WriteModule(TextWriter output, TemplateLibrary library, Data.Module module)
         {
             var baseDict = new Dictionary<string, IInsertable>()
             {
@@ -92,7 +92,7 @@ namespace TemplatingLibCLI
 
             foreach(var type in module.Types.Values)
             {
-                if (!library.CustomTypeTemplates.TryGetValue(type.Name, out TemplateLibary.TypeTemplates typeTemplates))
+                if (!library.CustomTypeTemplates.TryGetValue(type.Name, out TemplateLibrary.TypeTemplates typeTemplates))
                 {
                     typeTemplates = library.GenericTypeTemplates;
                 }
@@ -152,7 +152,7 @@ namespace TemplatingLibCLI
                         { "field_bit_offset", new StringLiteral(field.BitOffset.ToString()) },
                     };
 
-                    if(!library.CustomTypeTemplates.TryGetValue(field.Type.Name, out TemplateLibary.TypeTemplates fieldTypeTemplates))
+                    if(!library.CustomTypeTemplates.TryGetValue(field.Type.Name, out TemplateLibrary.TypeTemplates fieldTypeTemplates))
                     {
                         fieldTypeTemplates = library.GenericTypeTemplates;
                     }

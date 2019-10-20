@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TemplateLibrary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="C">
+  <FileTemplate>Templates/c_file.t</FileTemplate>
+  <TypeNameTemplate>Templates/c_typename.t</TypeNameTemplate>
+  <DefaultTypeTemplates>
+    <WriteCall>Templates/c_write_call.t</WriteCall>
+    <ReadCall>Templates/c_read_call.t</ReadCall>
+    <WriteFunction>Templates/c_write_function.t</WriteFunction>
+    <ReadFunction>Templates/c_read_function.t</ReadFunction>
+    <TypeTemplate>Templates/c_struct.t</TypeTemplate>
+    <TypeFieldTemplate>Templates/c_struct_field.t</TypeFieldTemplate>
+  </DefaultTypeTemplates>
+  <CustomTypeTemplates>
+    <TypeTemplates Type="uint4">
+      <WriteCall>Templates/c_write_call_uint4.t</WriteCall>
+      <ReadCall>Templates/c_read_call_uint4.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uint4.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="MessageType">
+      <WriteCall>Templates/c_write_call_uint4.t</WriteCall>
+      <ReadCall>Templates/c_read_call_uint4.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uint4.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="uint8">
+      <WriteCall>Templates/c_read_call_uint8.t</WriteCall>
+      <ReadCall>Templates/c_write_call_uint8.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uintx.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="int8">
+      <WriteCall>Templates/c_read_call_uint8.t</WriteCall>
+      <ReadCall>Templates/c_write_call_uint8.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uintx.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="uint16">
+      <WriteCall>Templates/c_read_call_uint16.t</WriteCall>
+      <ReadCall>Templates/c_write_call_uint16.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uintx.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="int16">
+      <WriteCall>Templates/c_read_call_uint16.t</WriteCall>
+      <ReadCall>Templates/c_write_call_uint16.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uintx.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="uint32">
+      <WriteCall>Templates/c_read_call_uint32.t</WriteCall>
+      <ReadCall>Templates/c_write_call_uint32.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uintx.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="int32">
+      <WriteCall>Templates/c_read_call_uint32.t</WriteCall>
+      <ReadCall>Templates/c_write_call_uint32.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uintx.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="uint64">
+      <WriteCall>Templates/c_read_call_uint64.t</WriteCall>
+      <ReadCall>Templates/c_write_call_uint64.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uintx.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="int64">
+      <WriteCall>Templates/c_read_call_uint64.t</WriteCall>
+      <ReadCall>Templates/c_write_call_uint64.t</ReadCall>
+      <WriteFunction>Templates/blank.t</WriteFunction>
+      <ReadFunction>Templates/blank.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uintx.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+    <TypeTemplates Type="uint48">
+      <WriteCall>Templates/c_read_call.t</WriteCall>
+      <ReadCall>Templates/c_write_call.t</ReadCall>
+      <WriteFunction>Templates/c_read_function_uint48.t</WriteFunction>
+      <ReadFunction>Templates/c_write_function_uint48.t</ReadFunction>
+      <TypeTemplate>Templates/c_typedef_uint48.t</TypeTemplate>
+      <TypeFieldTemplate>Templates/blank.t</TypeFieldTemplate>
+    </TypeTemplates>
+  </CustomTypeTemplates>
+</TemplateLibrary>

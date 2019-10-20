@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using TemplatingLib;
 using TemplatingLibCLI.Messages;
 
@@ -11,222 +12,82 @@ namespace TemplatingLibCLI
 {
     class Program
     {
-        private static void OutputObject(TextWriter writer, Template objectTemplate, Template fieldTemplate, string moduleName, string objectName, IEnumerable<Tuple<string, string>> fieldsTypeName)
+        public static string GetArgument(string flag, string[] args)
         {
-            var baseDictionary = new Dictionary<string, IInsertable>
+            for (int i = 0; i < args.Length; i++)
             {
-                { "module_name", new StringLiteral(moduleName) },
-                { "obj_name", new StringLiteral(objectName) },
-            };
-
-            var fieldsContainer = new InsertableContainer()
-            {
-                AutoIndentAndNewline = true
-            };
-
-            foreach (var field in fieldsTypeName)
-            {
-                fieldsContainer.Insertables.Add(
-                    new TemplateInsert(
-                        fieldTemplate,
-                        new NestedDictionary<string, IInsertable>(baseDictionary)
-                        {
-                            { "type", new StringLiteral(field.Item1) },
-                            { "name", new StringLiteral(field.Item2) },
-                        }
-                        ));
+                if (args[i] == flag && i + 1 < args.Length)
+                {
+                    return args[i + 1];
+                }
             }
-
-            var structDict = new NestedDictionary<string, IInsertable>(baseDictionary)
-            {
-                { "fields", fieldsContainer }
-            };
-
-            objectTemplate.Apply(writer, structDict);
+            return null;
         }
 
-        private static void OutputObjectParser(TextWriter writer, Template parseFuncTemplate, Template parseFieldTemplate, string moduleName, string objectName, IEnumerable<Tuple<string, string, int>> fieldsTypeName)
+        public static bool HasFlag(string flag, string[] args)
         {
-            var baseDictionary = new Dictionary<string, IInsertable>
+            for(int i = 0; i < args.Length; i++)
             {
-                { "module_name", new StringLiteral(moduleName) },
-                { "obj_name", new StringLiteral(objectName) },
-                { "obj_type", new StringLiteral(moduleName + "_" + objectName) }
-            };
-
-            var fieldsContainer = new InsertableContainer()
-            {
-                AutoIndentAndNewline = true
-            };
-
-            foreach (var field in fieldsTypeName)
-            {
-                fieldsContainer.Insertables.Add(
-                    new TemplateInsert(
-                        parseFieldTemplate,
-                        new NestedDictionary<string, IInsertable>(baseDictionary)
-                        {
-                            { "field_type", new StringLiteral(field.Item1) },
-                            { "field_name", new StringLiteral(field.Item2) },
-                            { "offset", new StringLiteral(field.Item3.ToString()) },
-                        }
-                        ));
+                if(args[i] == flag)
+                {
+                    return true;
+                }
             }
-
-            var structDict = new NestedDictionary<string, IInsertable>(baseDictionary)
-            {
-                { "parse_fields", fieldsContainer }
-            };
-
-            parseFuncTemplate.Apply(writer, structDict);
+            return false;
         }
 
         static void Main(string[] args)
         {
-            var protocol = ProtocolLoader.LoadProtocol("ptp.xml");
-
-            var testThing = new TestThing();
-            var modules = testThing.FromProtocol(protocol);
-
-            var templateLib = new TemplateLibary();
-            templateLib.FileTemplate = new Template().LoadFromFile("Templates/c_file.t");
-            templateLib.TypeNameTemplate = new Template().LoadFromFile("Templates/c_typename.t");
-            templateLib.GenericTypeTemplates = new TemplateLibary.TypeTemplates
+            if(HasFlag("-h", args))
             {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/c_read_function.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/c_write_function.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_struct.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/c_struct_field.t"),
-            };
+                Console.WriteLine("Message protocol code generator");
+                Console.WriteLine();
+                Console.WriteLine("-h Show this help page");
+                Console.WriteLine("-i [path] Path to protocol xml file");
+                Console.WriteLine("-t [path] Path to template library xml file");
+                Console.WriteLine("-o [path] Path to output file");
+                Console.ReadLine();
+                return;
+            }
 
-            templateLib.CustomTypeTemplates.Add("MessageType", new TemplateLibary.TypeTemplates
+            var protocolFile = GetArgument("-i", args);
+            var templateLibFile = GetArgument("-t", args);
+            var outputFile = GetArgument("-o", args);
+
+            if (protocolFile == null || templateLibFile == null || outputFile == null)
             {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint4.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint4.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uint4.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
+                Console.WriteLine("Missing parameters, use -h to show help");
+                Console.ReadLine();
+                return;
+            }
 
-            templateLib.CustomTypeTemplates.Add("uint4", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint4.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint4.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uint4.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("uint8", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint8.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint8.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("int8", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint8.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint8.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("uint16", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint16.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint16.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("int16", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint16.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint16.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("uint32", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint32.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint32.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("int32", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint32.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint32.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("uint48", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/c_read_function_uint48.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/c_write_function_uint48.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uint48.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("uint64", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint64.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint64.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            templateLib.CustomTypeTemplates.Add("int64", new TemplateLibary.TypeTemplates
-            {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint64.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint64.t"),
-                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
-                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
-                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
-            });
-
-            string outputFile = modules[0].Name + ".c";
-            Console.WriteLine($"Outputting to {outputFile}");
             try
             {
+                Console.WriteLine($"Input file: {protocolFile}");
+                Console.WriteLine($"Template lib: {templateLibFile}");
+                Console.WriteLine($"Output file: {outputFile}");
+
+                var protocol = ProtocolLoader.LoadProtocol(protocolFile);
+
+                var testThing = new TestThing();
+                var modules = testThing.FromProtocol(protocol);
+
+                var templateLib = TemplateLibrary.LoadFromFile(templateLibFile);
+
+     
                 using(var writer = new StreamWriter(outputFile, false, Encoding.UTF8))
                 {
                     testThing.WriteModule(writer, templateLib, modules[0]);
                 }
                 Console.WriteLine("Done!");
+                Console.ReadLine();
             }
             catch(Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("ERROR");
+                Console.WriteLine(e.Message);
+                Console.ReadLine();
             }
-
-            Console.ReadKey();
         }
     }
 }
