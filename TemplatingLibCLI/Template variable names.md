@@ -14,7 +14,7 @@ Various templates can be specified, both globally and per type.
 | TypeFieldTemplate | The template for a single field in the type/object declaration |
 | TypeNameTemplate | Template for turning an obj_name and module_name into a full type name |
 
-The graph below shows how the templates are nested when generating the code.
+The graph below shows how the templates are nested when generating the code. The (+) indicates that there could be one or more of the given templates placed by the generator.
 
 ```
 FileTemplate
