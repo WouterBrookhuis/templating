@@ -14,6 +14,9 @@ Various templates can be specified, both globally and per type.
 | TypeFieldTemplate | The template for a single field in the type/object declaration |
 | TypeNameTemplate | Template for turning an obj_name and module_name into a full type name |
 
+The graph below shows how the templates are nested when generating the code.
+
+```
 FileTemplate
 |
 \ - TypeTemplate (+)
@@ -37,7 +40,7 @@ FileTemplate
         \ - WriteCall (+)
             |
             \ - TypeNameTemplate
-
+```
 ## Template variables
 These are the variables that are available in the templates. Some depend on context, such as obj_name which in the case of TypeNameTemplate refers to the name of the object we want the type name for.
 
