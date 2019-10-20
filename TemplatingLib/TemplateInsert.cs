@@ -26,7 +26,7 @@ namespace TemplatingLib
 
         public void Insert(TextWriter output, int currentIndentation)
         {
-            _template.Apply(output, _variables);
+            _template.Apply(output, _variables, currentIndentation);
         }
     }
 }

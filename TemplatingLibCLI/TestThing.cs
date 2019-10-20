@@ -186,7 +186,7 @@ namespace TemplatingLibCLI
                 { "objects", objectsContainer }
             };
 
-            library.FileTemplate.Apply(output, fileDict);
+            library.FileTemplate.Apply(output, fileDict, 0);
         }
     }
 }
