@@ -1,5 +1,12 @@
-﻿## Templates
-Various templates can be specified, both globally and per type.
+# Protocol Message (De)Serialization Code Generator
+
+## The CLI
+The command line interface itself has a build-in help function which can be displayed by running the program using a `-h` argument.
+
+The CLI needs three arguments, the protocol description xml file `-i`, the template library xml file `-t` and the output file `-o`. See `ptp.xml` and `cslib.xml` for examples for a partial Precision Time Protocol (IEEE 1588-2008) message definition and a C# template library. To run these and output to `ptp.cs` the arguments would be `-i ptp.xml -t cslib.xml -o ptp.cs`.
+
+## Templates
+Various templates can be specified, both globally and per type, in a template library xml file.
 
 | Template | Description |
 | --- | --- |
