@@ -101,13 +101,23 @@ namespace TemplatingLibCLI
                 TypeFieldTemplate = new Template().LoadFromFile("Templates/c_struct_field.t"),
             };
 
+            templateLib.CustomTypeTemplates.Add("MessageType", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint4.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint4.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uint4.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
             templateLib.CustomTypeTemplates.Add("uint4", new TemplateLibary.TypeTemplates
             {
                 ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint4.t"),
                 WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint4.t"),
                 ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
                 WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
-                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uint4.t"),
                 TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
             });
 
@@ -123,8 +133,8 @@ namespace TemplatingLibCLI
 
             templateLib.CustomTypeTemplates.Add("int8", new TemplateLibary.TypeTemplates
             {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_int8.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_int8.t"),
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint8.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint8.t"),
                 ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
                 WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
                 TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
@@ -143,8 +153,8 @@ namespace TemplatingLibCLI
 
             templateLib.CustomTypeTemplates.Add("int16", new TemplateLibary.TypeTemplates
             {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_int16.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_int16.t"),
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint16.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint16.t"),
                 ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
                 WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
                 TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
@@ -163,11 +173,21 @@ namespace TemplatingLibCLI
 
             templateLib.CustomTypeTemplates.Add("int32", new TemplateLibary.TypeTemplates
             {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_int32.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_int32.t"),
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint32.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint32.t"),
                 ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
                 WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
                 TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            templateLib.CustomTypeTemplates.Add("uint48", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/c_read_function_uint48.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/c_write_function_uint48.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uint48.t"),
                 TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
             });
 
@@ -183,15 +203,28 @@ namespace TemplatingLibCLI
 
             templateLib.CustomTypeTemplates.Add("int64", new TemplateLibary.TypeTemplates
             {
-                ReadCall = new Template().LoadFromFile("Templates/c_read_call_int64.t"),
-                WriteCall = new Template().LoadFromFile("Templates/c_write_call_int64.t"),
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint64.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint64.t"),
                 ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
                 WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
                 TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
                 TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
             });
 
-            testThing.WriteModule(Console.Out, templateLib, modules[0]);
+            string outputFile = modules[0].Name + ".c";
+            Console.WriteLine($"Outputting to {outputFile}");
+            try
+            {
+                using(var writer = new StreamWriter(outputFile, false, Encoding.UTF8))
+                {
+                    testThing.WriteModule(writer, templateLib, modules[0]);
+                }
+                Console.WriteLine("Done!");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             Console.ReadKey();
         }

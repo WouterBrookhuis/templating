@@ -1,1 +1,1 @@
-﻿%obj_name%->%field_name% = ((&Buffer[%field_byte_offset%] << %field_bit_offset%) >> 4) & 0x0F;
+﻿%obj_name%->%field_name% = ((Buffer[%field_byte_offset%] << %field_bit_offset%) >> 4) & 0x0F;

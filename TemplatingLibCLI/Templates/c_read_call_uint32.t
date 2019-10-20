@@ -1,0 +1,1 @@
+﻿%obj_name%->%field_name% = (Buffer[%field_byte_offset%] << 24) | (Buffer[%field_byte_offset% + 1] << 16) | (Buffer[%field_byte_offset% + 2] << 8)  | Buffer[%field_byte_offset% + 3];

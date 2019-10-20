@@ -1,0 +1,1 @@
+﻿typedef uint8_t %module_name%_%obj_name%_t;

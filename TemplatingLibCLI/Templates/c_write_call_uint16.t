@@ -1,0 +1,1 @@
+﻿Buffer[%field_byte_offset%] = %obj_name%->%field_name% >> 16; Buffer[%field_byte_offset% + 1] = %obj_name%->%field_name%;
