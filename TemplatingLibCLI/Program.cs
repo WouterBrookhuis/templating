@@ -46,7 +46,6 @@ namespace TemplatingLibCLI
                 Console.WriteLine("-i [path] Path to protocol xml file");
                 Console.WriteLine("-t [path] Path to template library xml file");
                 Console.WriteLine("-o [path] Path to output file");
-                Console.ReadLine();
                 return;
             }
 
@@ -57,7 +56,6 @@ namespace TemplatingLibCLI
             if (protocolFile == null || templateLibFile == null || outputFile == null)
             {
                 Console.WriteLine("Missing parameters, use -h to show help");
-                Console.ReadLine();
                 return;
             }
 
@@ -80,13 +78,11 @@ namespace TemplatingLibCLI
                     testThing.WriteModule(writer, templateLib, modules[0]);
                 }
                 Console.WriteLine("Done!");
-                Console.ReadLine();
             }
             catch(Exception e)
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine(e.Message);
-                Console.ReadLine();
             }
         }
     }

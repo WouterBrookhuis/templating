@@ -1,0 +1,1 @@
+%field_type%.Write(%obj_name%.%field_name%, /* TODO: Parameters */);
