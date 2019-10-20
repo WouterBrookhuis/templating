@@ -83,69 +83,116 @@ namespace TemplatingLibCLI
 
         static void Main(string[] args)
         {
-            var structFieldTemplate = new Template().LoadFromFile("Templates/c_struct_field.t");
-            var structTemplate = new Template().LoadFromFile("Templates/c_struct.t");
-            var typeNameTemplate = new Template().LoadFromFile("Templates/c_typename.t");
-            var parseFuncTemplate = new Template().LoadFromFile("Templates/c_internal_parse_func.t");
-            var parseFieldTemplate = new Template().LoadFromFile("Templates/c_parse_field.t");
-
             var protocol = ProtocolLoader.LoadProtocol("ptp.xml");
 
-            
+            var testThing = new TestThing();
+            var modules = testThing.FromProtocol(protocol);
 
-            var writer = Console.Out;
-
-            var baseDictionary = new Dictionary<string, IInsertable>
+            var templateLib = new TemplateLibary();
+            templateLib.FileTemplate = new Template().LoadFromFile("Templates/c_file.t");
+            templateLib.TypeNameTemplate = new Template().LoadFromFile("Templates/c_typename.t");
+            templateLib.GenericTypeTemplates = new TemplateLibary.TypeTemplates
             {
-                { "obj_name", new StringLiteral("PTP_Header") },
-                { "obj_size", new StringLiteral("32") },
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/c_read_function.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/c_write_function.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_struct.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/c_struct_field.t"),
             };
 
-            Template template = new Template();
-            template.LoadFromFile("Templates/c_parsing.t");
-            try
+            templateLib.CustomTypeTemplates.Add("uint4", new TemplateLibary.TypeTemplates
             {
-                template.Apply(Console.Out, new NestedDictionary<string, IInsertable>(baseDictionary)
-                {
-                    { "struct_name", new StringLiteral("PTP_Header_t") },
-                });
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint4.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint4.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
 
-                OutputObject(Console.Out, structTemplate, structFieldTemplate, "PTP", "MessageHeader", new[] {
-                    new Tuple<string, string>("PTP_MessageType" , "messageType"),
-                    new Tuple<string, string>("uint8" , "version"),
-                    new Tuple<string, string>("uint16" , "messageLength"),
-                    new Tuple<string, string>("uint8" , "domainNumber"),
-                    new Tuple<string, string>("uint8" , "reserved2"),
-                    new Tuple<string, string>("uint16" , "flagField"),
-                    new Tuple<string, string>("int64" , "correctionField"),
-                    new Tuple<string, string>("uint32" , "reserved3"),
-                    new Tuple<string, string>("PTP_PortIdentity" , "sourcePortIdentity"),
-                    new Tuple<string, string>("uint16" , "sequenceId"),
-                    new Tuple<string, string>("uint8" , "controlField"),
-                    new Tuple<string, string>("int8" , "logMessageInterval")
-                });
-
-                Console.Out.WriteLine();
-
-                OutputObjectParser(Console.Out, parseFuncTemplate, parseFieldTemplate, "PTP", "MessageHeader", new[] {
-                    new Tuple<string, string, int>("PTP_MessageType" , "messageType", 0),
-                    new Tuple<string, string, int>("uint8" , "version", 1),
-                    new Tuple<string, string, int>("uint16" , "messageLength", 2),
-                    new Tuple<string, string, int>("uint8" , "domainNumber", 4),
-                    new Tuple<string, string, int>("uint8" , "reserved2", 5),
-                    new Tuple<string, string, int>("uint16" , "flagField", 6),
-                    new Tuple<string, string, int>("int64" , "correctionField", 8),
-                    new Tuple<string, string, int>("uint32" , "reserved3", 16),
-                    new Tuple<string, string, int>("PTP_PortIdentity" , "sourcePortIdentity", 20),
-                    new Tuple<string, string, int>("uint16" , "sequenceId", 30),
-                    new Tuple<string, string, int>("uint8" , "controlField", 32),
-                    new Tuple<string, string, int>("int8" , "logMessageInterval", 33)
-                });
-            }
-            catch(Exception e)
+            templateLib.CustomTypeTemplates.Add("uint8", new TemplateLibary.TypeTemplates
             {
-                Console.WriteLine(e);
-            }
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint8.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint8.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            templateLib.CustomTypeTemplates.Add("int8", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_int8.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_int8.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            templateLib.CustomTypeTemplates.Add("uint16", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint16.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint16.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            templateLib.CustomTypeTemplates.Add("int16", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_int16.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_int16.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            templateLib.CustomTypeTemplates.Add("uint32", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint32.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint32.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            templateLib.CustomTypeTemplates.Add("int32", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_int32.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_int32.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            templateLib.CustomTypeTemplates.Add("uint64", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_uint64.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_uint64.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            templateLib.CustomTypeTemplates.Add("int64", new TemplateLibary.TypeTemplates
+            {
+                ReadCall = new Template().LoadFromFile("Templates/c_read_call_int64.t"),
+                WriteCall = new Template().LoadFromFile("Templates/c_write_call_int64.t"),
+                ReadFunction = new Template().LoadFromFile("Templates/blank.t"),
+                WriteFunction = new Template().LoadFromFile("Templates/blank.t"),
+                TypeTemplate = new Template().LoadFromFile("Templates/c_typedef_uintx.t"),
+                TypeFieldTemplate = new Template().LoadFromFile("Templates/blank.t"),
+            });
+
+            testThing.WriteModule(Console.Out, templateLib, modules[0]);
+
             Console.ReadKey();
         }
     }

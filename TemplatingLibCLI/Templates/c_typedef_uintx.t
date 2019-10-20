@@ -1,0 +1,1 @@
+﻿typedef %obj_name%_t %module_name%_%obj_name%_t;

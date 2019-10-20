@@ -1,1 +1,0 @@
-﻿%field_type%_Parse(&%obj_name%->%field_name%, &buffer[%offset%])

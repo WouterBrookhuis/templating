@@ -1,1 +1,1 @@
-﻿%type%_t %name%;
+﻿%field_type%_t %field_name%;

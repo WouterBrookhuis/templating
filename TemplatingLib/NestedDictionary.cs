@@ -10,9 +10,9 @@ namespace TemplatingLib
     public class NestedDictionary<K, V> : IDictionary<K, V>
     {
         private Dictionary<K, V> _self;
-        private Dictionary<K, V> _parent;
+        private IDictionary<K, V> _parent;
 
-        public NestedDictionary(Dictionary<K, V> parent)
+        public NestedDictionary(IDictionary<K, V> parent)
         {
             _self = new Dictionary<K, V>();
             _parent = parent ?? throw new ArgumentNullException(nameof(parent));

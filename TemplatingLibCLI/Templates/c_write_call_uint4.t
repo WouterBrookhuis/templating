@@ -1,0 +1,1 @@
+﻿&Buffer[%field_byte_offset%] = (((%obj_name%->%field_name% & 0x0F) << 4) >> %field_bit_offset%);
